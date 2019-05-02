@@ -1,0 +1,57 @@
+<DOCTYPE! html>
+    <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>zFTP-Status</title>
+            <link href="/zftpstatus.css" rel="stylesheet" type="text/css">
+            <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
+        </head>
+        <body class="body-container">
+            <header>
+                <h1>Quick &amp; easy file transfers for mainframe folks</h1>
+            </header>
+            <section class="section-container">
+                <form class="form-container" id="zftp-form" name="zftp-form" method="POST" action="/zftpstats">
+                    <article class="article-container">
+                        <table>
+                            <caption>File(s) transfer status</caption>
+                            <thead>
+                                <tr>
+                                    <th>FT#</th>
+                                    <th>Source filename</th>
+                                    <th>Destination filename</th>
+                                    <th>Status</th>
+                                    <th>Message</th>
+                                </tr>
+                            </thead>    
+                            <tbody>
+                                <% outrsfers.forEach((trsfer) => { %>
+                                    <tr>
+                                        <td><%=trsfer.trsfrno%></td>
+                                        <td><%=trsfer.source%></td>
+                                        <td><%=trsfer.dest%></td>
+                                        <% if (trsfer.status == "success") {%>
+                                            <td style="color:green">&#10004;</td>
+                                        <% } else { %>
+                                            <td style="color:crimson">&#10008;</td>
+                                        <% } %>
+                                        <td><%=trsfer.message%></td>
+                                    </tr>             
+                                <% }) %>   
+                            </tbody>
+                        </table>
+                    </article>
+                    <article class="article-container">
+                        <% if (failure) { %>
+                                <button id="submit1-btn" type="submit" value="submit1-btn">Fix the issue</button>
+                        <% } else { %>
+                                <button id="submit2-btn" type="submit" value="submit2-btn">Back</button>
+                        <% } %>
+                    </article>
+                </form>
+            </section>
+            <footer>
+                <h6><a href="http://sarakuma.net" target="_blank">a JSnista</a></h6>
+            </footer>
+        </body>
+    </html>

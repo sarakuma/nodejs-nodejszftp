@@ -1,0 +1,205 @@
+<!-- This is a static file -->
+<!-- served from your routes in server.js -->
+
+<DOCTYPE! html>
+    <html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>zFTP</title>
+        <link href="/style.css" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
+    </head>
+
+    <body class="body-container">
+        <header>
+            <h1>Quick &amp; easy file transfers for mainframe folks</h1>
+        </header>
+        <section class="section-container">
+            <form class="form-container" id="zftp-form" name="zftp-form" method="POST" action="/zftp">
+                <article class="article-container">
+                    <select id="machine-sel">
+                        <option value="hostname" selected>Hostname</option>
+                        <option value="ipad">IP address</option>
+                    </select>
+                    <input type="text" name="machine-input" placeholder="enter your hostname" required value="<%=machine%>">
+                </article>
+                <article class="article-container">
+                    <input type="text" name="userid" maxlength="8" placeholder="Mainframe UserID" required value="<%=userid%>">
+                    <input type="password" name="pswd" maxlength="8" placeholder="Mainframe Password" required value="<%=pswd%>">
+                </article>
+                <article class="article-container">
+                    <div>
+                        <button type="button" id="btnp" name="btnp">+</button>
+                        <button type="button" id="btnm" name="btnm">-</button>
+                        <button id="submit-btn" type="submit" value="submit-btn">Transfer</button>
+                    </div>
+                </article>
+                <% if (!failure) { %>
+                    <article class="article-container">
+                        <input type="hidden" name="trsfrno1" value="1">
+                        <span>FT#</span>
+                        <span>1</span>
+                        <fieldset>
+                            <legend>Verb?</legend>
+                            <div>
+                                <input type="radio" name="ftpverb-radio1" value="receive" checked>
+                                <label for="ftpverb-radio1">Recieve data from mainframe</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="ftpverb-radio1" value="send">
+                                <label for="ftpverb-radio1">Send data to mainframe</label>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Format?</legend>
+                            <div>
+                                <input type="radio" name="ftpformat-radio1" value="text" checked>
+                                <label for="ftpformat-radio1">Text</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="ftpformat-radio1" value="binary">
+                                <label for="ftpformat-radio1">Binary</label>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Files?</legend>
+                            <div>
+                                <input type=text name="dsn1" maxlength=44 placeholder="Mainframe dataset name"
+                                    title="Please enter DSN without quotes" required value="">
+                                <input type=number name="lrecl1" min=1 max=9999 placeholder="LRECL" required value="">
+                            </div>
+                            <div>
+                                <input type=text class="inpfil" name="filename1" placeholder="Client file name"
+                                    title="Please specify the absolute path of the file" required value="">
+                            </div>
+                        </fieldset>
+                    </article>
+                <% } else { %>
+                    <% outrsfers.forEach((trsfr) => { %>
+                        <% if (trsfr.status === "failure") { %>
+                            <% if (trsfr.verb === "receive") { %>
+                                <article class="article-container">
+                                    <input type="hidden" name="trsfrno<%=trsfr.trsfrno%>" value="<%=trsfr.trsfrno%>">
+                                    <span>FT#</span>
+                                    <span><%=trsfr.trsfrno%></span>
+                                    <fieldset>
+                                        <legend>Verb?</legend>
+                                        <div>
+                                            <input type="radio" name="ftpverb-radio<%=trsfr.trsfrno%>" value="receive" checked>
+                                            <label for="ftpverb-radio<%=trsfr.trsfrno%>">Recieve data from mainframe</label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" name="ftpverb-radio<%=trsfr.trsfrno%>" value="send">
+                                            <label for="ftpverb-radio<%=trsfr.trsfrno%>">Send data to mainframe</label>
+                                        </div>
+                                    </fieldset>
+                                    <% if (trsfr.fmt === "text") { %>
+                                        <fieldset>
+                                            <legend>Format?</legend>
+                                            <div>
+                                                <input type="radio" name="ftpformat-radio<%=trsfr.trsfrno%>" value="text" checked>
+                                                <label for="ftpformat-radio<%=trsfr.trsfrno%>">Text</label>
+                                            </div>
+                                            <div>
+                                                <input type="radio" name="ftpformat-radio<%=trsfr.trsfrno%>" value="binary">
+                                                <label for="ftpformat-radio<%=trsfr.trsfrno%>">Binary</label>
+                                            </div>
+                                        </fieldset>
+                                    <% } else { %>
+                                        <fieldset>
+                                            <legend>Format?</legend>
+                                            <div>
+                                                <input type="radio" name="ftpformat-radio<%=trsfr.trsfrno%>" value="text">
+                                                <label for="ftpformat-radio<%=trsfr.trsfrno%>">Text</label>
+                                            </div>
+                                            <div>
+                                                <input type="radio" name="ftpformat-radio<%=trsfr.trsfrno%>" value="binary" checked>
+                                                <label for="ftpformat-radio<%=trsfr.trsfrno%>">Binary</label>
+                                            </div>
+                                        </fieldset>
+                                    <% } %>
+                                    <fieldset>
+                                        <legend>Files?</legend>
+                                        <div>
+                                            <input type=text name="dsn<%=trsfr.trsfrno%>" maxlength=44 placeholder="Mainframe dataset name"
+                                                title="Please enter DSN without quotes" required value="<%=trsfr.source%>">
+                                            <input type=number name="lrecl<%=trsfr.trsfrno%>" min=1 max=9999 placeholder="LRECL" required value="<%=trsfr.lrecl%>">
+                                        </div>
+                                        <div>
+                                            <input type=text class="inpfil" name="filename<%=trsfr.trsfrno%>" placeholder="Client file name"
+                                                title="Please specify the absolute path of the file" required value="<%=trsfr.dest%>">
+                                        </div>
+                                    </fieldset>
+                                </article>
+                            <% } else { %>
+                                <article class="article-container">
+                                    <input type="hidden" name="trsfrno<%=trsfr.trsfrno%>" value="<%=trsfr.trsfrno%>">
+                                    <span>FT#</span>
+                                    <span><%=trsfr.trsfrno%></span>
+                                    <fieldset>
+                                        <legend>Verb?</legend>
+                                        <div>
+                                            <input type="radio" name="ftpverb-radio<%=trsfr.trsfrno%>" value="receive" >
+                                            <label for="ftpverb-radio<%=trsfr.trsfrno%>">Recieve data from mainframe</label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" name="ftpverb-radio<%=trsfr.trsfrno%>" value="send" checked>
+                                            <label for="ftpverb-radio<%=trsfr.trsfrno%>">Send data to mainframe</label>
+                                        </div>
+                                    </fieldset>
+                                    <% if (trsfr.fmt === "text") { %>
+                                        <fieldset>
+                                            <legend>Format?</legend>
+                                            <div>
+                                                <input type="radio" name="ftpformat-radio<%=trsfr.trsfrno%>" value="text" checked>
+                                                <label for="ftpformat-radio<%=trsfr.trsfrno%>">Text</label>
+                                            </div>
+                                            <div>
+                                                <input type="radio" name="ftpformat-radio<%=trsfr.trsfrno%>" value="binary">
+                                                <label for="ftpformat-radio<%=trsfr.trsfrno%>">Binary</label>
+                                            </div>
+                                        </fieldset>
+                                    <% } else { %>
+                                        <fieldset>
+                                            <legend>Format?</legend>
+                                            <div>
+                                                <input type="radio" name="ftpformat-radio<%=trsfr.trsfrno%>" value="text">
+                                                <label for="ftpformat-radio<%=trsfr.trsfrno%>">Text</label>
+                                            </div>
+                                            <div>
+                                                <input type="radio" name="ftpformat-radio<%=trsfr.trsfrno%>" value="binary" checked>
+                                                <label for="ftpformat-radio<%=trsfr.trsfrno%>">Binary</label>
+                                            </div>
+                                        </fieldset>
+                                    <% } %>
+                                    <fieldset>
+                                        <legend>Files?</legend>
+                                        <div>
+                                            <input type=text name="dsn<%=trsfr.trsfrno%>" maxlength=44 placeholder="Mainframe dataset name"
+                                                title="Please enter DSN without quotes" required value="<%=trsfr.dest%>">
+                                            <input type=number name="lrecl<%=trsfr.trsfrno%>" min=1 max=9999 placeholder="LRECL" required value="<%=trsfr.lrecl%>">
+                                        </div>
+                                        <div>
+                                            <input type=text class="inpfil" name="filename<%=trsfr.trsfrno%>" placeholder="Client file name"
+                                                title="Please specify the absolute path of the file" required value="<%=trsfr.source%>">
+                                        </div>
+                                    </fieldset>
+                                </article>
+                            <% } %>
+                        <% } %>
+                    <% }) %>
+                <% } %>
+            </form>
+            <aside>
+                <p>Welcome!</p>
+            </aside>
+        </section>
+        <footer>
+            <h6><a href="http://sarakuma.net" target="_blank">a JSnista</a></h6>
+        </footer>
+        <script src="/client.js"></script>
+    </body>
+
+    </html>
+</DOCTYPE!>

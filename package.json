@@ -1,0 +1,32 @@
+{
+  "name": "nodejszftp",
+  "version": "1.0.0",
+  "description": "An application to transfer data in & out of mainframe asynchronously using FTP",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n/a.git"
+  },
+  "keywords": [
+    "mainframe",
+    "ftp",
+    "express",
+    "zos"
+  ],
+  "author": "me.kumar.saraboji@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://sarakuma.github.io/"
+  },
+  "homepage": "https://sarakuma.github.io/",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "zos-node-accessor": "^1.0.0"
+  }
+}
