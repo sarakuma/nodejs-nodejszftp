@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/n/a.git"
+    "url": "https://github.com/sarakuma/nodejs-nodejszftp.git"
   },
   "keywords": [
     "mainframe",
@@ -20,7 +20,7 @@
   "author": "me.kumar.saraboji@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://sarakuma.github.io/"
+    "url": "https://github.com/sarakuma/nodejs-nodejszftp.git"
   },
   "homepage": "https://sarakuma.github.io/",
   "dependencies": {

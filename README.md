@@ -20,7 +20,7 @@ with mainframe ftp-server
 
 ## Instructions
 1. at terminal - npm install  
-2. node server.js
+2. at terminal - node server.js
 3. launch browser @socket - http://localhost:9001
 
 ### To-dos
